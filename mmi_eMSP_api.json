@@ -104,7 +104,98 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/location"
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/cpo/{country_code}/{party_id}/{location_id}/{evse_uid}/{connector_id}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Fetch a list of Locations, last updated between the {date_from} and {date_to} (paginated) from CPO.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Required when requesting an EVSE or Connector object.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Required when requesting a Connector object.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
                 }
               }
             }
@@ -124,7 +215,7 @@
   },
   "components": {
     "schemas": {
-      "location": {
+      "Location": {
         "description": "The Location object describes the location and its properties where a group of EVSEs that belong together are installed. Typically, the Location object is the exact location of the group of EVSEs, but it can also be the entrance of a parking garage which contains these EVSEs. The exact way to reach each EVSE can be further specified by its own properties.",
         "type": "object",
         "properties": {
@@ -144,46 +235,15 @@
             "description": "Uniquely identifies the location within the CPOs platform (and suboperator platforms). This field can never be changed, modified or renamed."
           },
           "publish": {
-            "type": "boolean",
-            "example": false
+            "type": "boolean"
           },
           "publish_allowed_to": {
-            "type": "array",
             "description": "This field may only be used when the publish field is set to false Only owners of Tokens that match all the set fields of one PublishToken in the list are allowed to be shown this location.",
-            "items": {
-              "properties": {
-                "uid": {
-                  "type": "string",
-                  "example": 12421,
-                  "description": "Unique ID by which this Token can be identified."
-                },
-                "type": {
-                  "description": "Type of the token.",
-                  "type": "string",
-                  "enum": [
-                    "RFID",
-                    "AD_HOC_USER",
-                    "APP_USER",
-                    "OTHER"
-                  ]
-                },
-                "visual_number": {
-                  "description": "Visual readable number/identification as printed on the Token (RFID card).",
-                  "type": "string",
-                  "example": "12345-67"
-                },
-                "issuer": {
-                  "description": "Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.",
-                  "type": "string",
-                  "example": "NewMotion"
-                },
-                "group_id": {
-                  "description": "This ID groups a couple of tokens. This can be used to make two or more tokens work as one.",
-                  "type": "string",
-                  "example": "123abc"
-                }
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublishTokenType"
               }
-            }
+            ]
           },
           "name": {
             "type": "string",
@@ -216,52 +276,126 @@
             "example": "IND"
           },
           "coordinates": {
-            "type": "object",
             "description": "Coordinates of the location.",
-            "properties": {
-              "latitude": {
-                "type": "string",
-                "example": "51.047599",
-                "description": "Latitude of the point in decimal degree. Decimal separator: \".\" Regex: -?[0-9]{1,2}\\.[0-9]{5,7}"
-              },
-              "longitude": {
-                "type": "string",
-                "example": "3.729944",
-                "description": "Longitude of the point in decimal degree. Decimal separator: \".\" Regex: -?[0-9]{1,3}\\.[0-9]{5,7}"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeoLocation"
               }
-            }
+            ]
           },
           "related_locations": {
             "description": "Geographical location of related points relevant to the user.",
-            "type": "object",
-            "properties": {
-              "latitude": {
-                "type": "string",
-                "example": "51.047599",
-                "description": "Latitude of the point in decimal degree. Decimal separator: \".\" Regex: -?[0-9]{1,2}\\.[0-9]{5,7}"
-              },
-              "longitude": {
-                "type": "string",
-                "example": "3.729944",
-                "description": "Longitude of the point in decimal degree. Decimal separator: \".\" Regex: -?[0-9]{1,3}\\.[0-9]{5,7}"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalGeoLocation"
               }
-            }
+            ]
           },
           "parking_type": {
-            "type": "string",
-            "enum": [
-              "PARKING_LOT",
-              "ON_STREET",
-              "ALONG_MOTORWAY",
-              "PARKING_GARAGE",
-              "UNDERGROUND_GARAGE",
-              "ON_DRIVEWAY"
+            "description": "The general type of parking at the charge point location.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ParkingType"
+              }
             ]
+          },
+          "evses": {
+            "type": "array",
+            "description": "List of EVSEs that belong to this Location.",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/EVSE"
+                }
+              ]
+            }
+          },
+          "directions": {
+            "description": "Human-readable directions on how to reach the location.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DisplayText"
+              }
+            ]
+          },
+          "operator": {
+            "description": "Information of the operator. When not specified, the information retrieved from the Credentials module should be used instead.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BusinessDetails"
+              }
+            ]
+          },
+          "suboperator": {
+            "description": "Information of the suboperator if available.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BusinessDetails"
+              }
+            ]
+          },
+          "owner": {
+            "description": "Information of the owner if available.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BusinessDetails"
+              }
+            ]
+          },
+          "facilities": {
+            "type": "array",
+            "description": "Optional list of facilities this charging location directly belongs to.",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Facility"
+                }
+              ]
+            }
+          },
+          "time_zone": {
+            "type": "string",
+            "description": "Representing the time zone of the location.",
+            "example": "IST(GMT+5:30)"
+          },
+          "opening_times": {
+            "description": "The times when the EVSEs at the location can be accessed for charging.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Hours"
+              }
+            ]
+          },
+          "charging_when_closed": {
+            "type": "boolean",
+            "description": "Indicates if the EVSEs are still charging outside the opening hours of the location. E.g. when the parking garage closes its barriers over night, is it allowed to charge till the next morning? Default: true"
+          },
+          "images": {
+            "description": "Links to images related to the location such as photos or logos.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Image"
+              }
+            ]
+          },
+          "energy_mix": {
+            "description": "Details on the energy supplied at this location.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnergyMix"
+              }
+            ]
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "DateTime",
+            "description": "Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).",
+            "example": "2015-06-29T20:39:09"
           }
         }
       },
-      "evse": {
-        "type": "string",
+      "EVSE": {
+        "type": "object",
         "description": "The EVSE object describes the part that controls the power supply to a single EV in a single session. It always belongs to a Location object. The object only contains directions to get from the location itself to the EVSE (i.e. floor, physical_reference or directions). When the directional properties of an EVSE are insufficient to reach the EVSE from the Location point, then it typically indicates that the EVSE should be put in a different Location object (sometimes with the same address but with different coordinates/directions). An EVSE object has a list of Connectors which can not be used simultaneously: only one connector per EVSE can be used at the time.",
         "properties": {
           "uid": {
@@ -276,40 +410,90 @@
           },
           "status": {
             "description": "Indicates the current status of the EVSE.",
-            "type": "string",
-            "enum": [
-              "AVAILABLE",
-              "BLOCKED",
-              "CHARGING",
-              "INOPERATIVE",
-              "OUTOFORDER",
-              "PLANNED",
-              "REMOVED",
-              "RESERVED",
-              "UNKNOWN"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Status"
+              }
+            ]
+          },
+          "status_schedule": {
+            "description": "Indicates a planned status update of the EVSE",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusSchedule"
+              }
             ]
           },
           "capabilities": {
             "description": "List of functionalities that the EVSE is capable of.",
-            "type": "string",
-            "enum": [
-              "CHARGING_PROFILE_CAPABLE",
-              "CHARGING_PREFERENCES_CAPABLE",
-              "CHIP_CARD_SUPPORT",
-              "CONTACTLESS_CARD_SUPPORT",
-              "CREDIT_CARD_PAYABLE",
-              "DEBIT_CARD_PAYABLE",
-              "PED_TERMINAL",
-              "REMOTE_START_STOP_CAPABLE",
-              "RESERVABLE",
-              "RFID_READER",
-              "TOKEN_GROUP_CAPABLE",
-              "UNLOCK_CAPABLE"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Capability"
+              }
             ]
+          },
+          "connectors": {
+            "type": "array",
+            "description": "List of available connectors on the EVSE.",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Connector"
+                }
+              ]
+            }
+          },
+          "floor_level": {
+            "type": "string",
+            "description": "Level on which the Charge Point is located (in garage buildings) in the locally displayed numbering scheme.",
+            "example": 2
+          },
+          "coordinates": {
+            "description": "Coordinates of the EVSE.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeoLocation"
+              }
+            ]
+          },
+          "physical_reference": {
+            "description": "A number/string printed on the outside of the EVSE for visual identification.",
+            "type": "string",
+            "example": 3
+          },
+          "directions": {
+            "description": "Multi-language human-readable directions when more detailed information on how to reach the EVSE from the Location is required.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DisplayText"
+              }
+            ]
+          },
+          "parking_restrictions": {
+            "description": "The restrictions that apply to the parking spot.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ParkingRestriction"
+              }
+            ]
+          },
+          "images": {
+            "description": "Links to images related to the EVSE such as photos or logos.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Image"
+              }
+            ]
+          },
+          "last_updated": {
+            "type": "string",
+            "description": "Timestamp when this EVSE or one of its Connectors was last updated (or created).",
+            "format": "DateTime",
+            "example": "2015-06-29T20:39:09"
           }
         }
       },
-      "connectors": {
+      "Connector": {
         "description": "A Connector is the socket or cable and plug available for the EV to use. A single EVSE may provide multiple Connectors but only one of them can be in use at the same time. A Connector always belongs to an EVSE object.",
         "type": "object",
         "properties": {
@@ -320,10 +504,114 @@
           },
           "standard": {
             "description": "The standard of the installed connector.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectorType"
+              }
+            ]
+          },
+          "format": {
+            "description": "The format (socket/cable) of the installed connector.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectorFormat"
+              }
+            ]
+          },
+          "power_type": {
+            "$ref": "#/components/schemas/PowerType"
+          },
+          "max_voltage": {
+            "type": "integer",
+            "description": "Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V]. For example: DC Chargers might vary the voltage during charging when battery almost full.",
+            "example": 920
+          },
+          "max_amperage": {
+            "type": "integer",
+            "description": "Maximum amperage of the connector, in ampere [A].",
+            "example": 400
+          },
+          "max_electric_power": {
+            "type": "integer",
+            "description": "Maximum electric power that can be delivered by this connector, in Watts (W). When the maximum electric power is lower than the calculated value from voltage and amperage, this value should be set. For example: A DC Charge Point which can delivers up to 920V and up to 400A can be limited to a maximum of 150kW (max_electric_power = 150000). Depending on the car, it may supply max voltage or current, but not both at the same time. For AC Charge Points, the amount of phases used can also have influence on the maximum power.",
+            "example": 150000
+          },
+          "tariff_ids": {
             "type": "string",
-            "example": "IEC_62196_T2"
+            "description": "Identifiers of the currently valid charging tariffs. Multiple tariffs are possible, but only one of each Tariff.type can be active at the same time. Tariffs with the same type are only allowed if they are not active at the same time: start_date_time and end_date_time period not overlapping. When preference-based smart charging is supported, one tariff for every possible ProfileType should be provided. These tell the user about the options they have at this Connector, and what the tariff is for every option. For a \"free of charge\" tariff, this field should be set and point to a defined \"free of charge\" tariff.",
+            "example": 12
+          },
+          "terms_and_conditions": {
+            "type": "string",
+            "format": "URL",
+            "description": "URL to the operatorâ€™s terms and conditions.",
+            "example": "www.deltacharging.com/terms_and_conditions"
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "DateTime",
+            "example": "2015-06-29T20:39:09",
+            "description": "Timestamp when this Connector was last updated (or created)."
           }
         }
+      },
+      "ConnectorType": {
+        "type": "string",
+        "enum": [
+          "CHADEMO",
+          "DOMESTIC_A",
+          "DOMESTIC_B",
+          "DOMESTIC_C",
+          "DOMESTIC_D",
+          "DOMESTIC_E",
+          "DOMESTIC_F",
+          "DOMESTIC_G",
+          "DOMESTIC_H",
+          "DOMESTIC_I",
+          "DOMESTIC_J",
+          "DOMESTIC_K",
+          "DOMESTIC_L",
+          "IEC_60309_2_single_16",
+          "IEC_60309_2_three_16",
+          "IEC_60309_2_three_32",
+          "IEC_60309_2_three_64",
+          "IEC_62196_T1",
+          "IEC_62196_T1_COMBO",
+          "IEC_62196_T2",
+          "IEC_62196_T2_COMBO",
+          "IEC_62196_T3A",
+          "IEC_62196_T3C",
+          "PANTOGRAPH_BOTTOM_ UP",
+          "PANTOGRAPH_TOP_DOW N",
+          "TESLA_R",
+          "TESLA_S"
+        ]
+      },
+      "ConnectorFormat": {
+        "description": "The format of the connector, whether it is a socket or a plug.",
+        "type": "string",
+        "enum": [
+          "SOCKET",
+          "CABLE"
+        ]
+      },
+      "Capability": {
+        "description": "The capabilities of an EVSE.",
+        "type": "string",
+        "enum": [
+          "CHARGING_PROFILE_CAPABLE",
+          "CHARGING_PREFERENCES_CAPABLE",
+          "CHIP_CARD_SUPPORT",
+          "CONTACTLESS_CARD_SUPPORT",
+          "CREDIT_CARD_PAYABLE",
+          "DEBIT_CARD_PAYABLE",
+          "PED_TERMINAL",
+          "REMOTE_START_STOP_CAPABLE",
+          "RESERVABLE",
+          "RFID_READER",
+          "TOKEN_GROUP_CAPABLE",
+          "UNLOCK_CAPABLE"
+        ]
       },
       "PublishTokenType": {
         "type": "object",
@@ -436,6 +724,14 @@
             "type": "string",
             "example": "www.deltacharging.in",
             "description": "Link to the operatorâ€™s website."
+          },
+          "logo": {
+            "description": "Image link to the operatorâ€™s logo.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Image"
+              }
+            ]
           }
         }
       },
@@ -570,20 +866,22 @@
         ]
       },
       "ExceptionalPeriod": {
-        "type": "object",
+        "type": "array",
         "description": "Specifies one exceptional period for opening or access hours.",
-        "properties": {
-          "period_begin": {
-            "type": "string",
-            "format": "datetime",
-            "description": "Begin of the exception. In UTC, time_zone field can be used to convert to local time.",
-            "example": "2015-03-16T10:10:02Z"
-          },
-          "period_end": {
-            "type": "string",
-            "format": "datetime",
-            "example": "2015-03-18T08:12:01Z",
-            "description": "End of the exception. In UTC, time_zone field can be used to convert to local time."
+        "items": {
+          "properties": {
+            "period_begin": {
+              "type": "string",
+              "format": "datetime",
+              "description": "Begin of the exception. In UTC, time_zone field can be used to convert to local time.",
+              "example": "2015-03-16T10:10:02Z"
+            },
+            "period_end": {
+              "type": "string",
+              "format": "datetime",
+              "example": "2015-03-18T08:12:01Z",
+              "description": "End of the exception. In UTC, time_zone field can be used to convert to local time."
+            }
           }
         }
       },
@@ -592,6 +890,147 @@
         "properties": {
           "twentyfourseven": {
             "type": "boolean"
+          },
+          "regular_hours": {
+            "description": "Regular hours, weekday-based. Only to be used if twentyfourseven=false, then this field needs to contain at least one RegularHours object.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RegularHours"
+              }
+            ]
+          },
+          "exceptional_openings": {
+            "description": "Exceptions for specified calendar dates, time-range based. Periods the station is operating/accessible. Additional to regular_hours. May overlap regular rules.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExceptionalPeriod"
+              }
+            ]
+          },
+          "exceptional_closings": {
+            "description": "Exceptions for specified calendar dates, time-range based. Periods the station is not operating/accessible. Overwriting regular_hours and exceptional_openings. Should not overlap exceptional_openings.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExceptionalPeriod"
+              }
+            ]
+          }
+        }
+      },
+      "Facility": {
+        "type": "string",
+        "enum": [
+          "HOTEL",
+          "RESTAURANT",
+          "CAFE",
+          "MALL",
+          "SUPERMARKET",
+          "SPORT",
+          "RECREATION_AREA",
+          "NATURE",
+          "MUSEUM",
+          "BIKE_SHARING",
+          "BUS_STOP",
+          "TAXI_STAND",
+          "TRAM_STOP",
+          "METRO_STATION",
+          "TRAIN_STATION",
+          "AIRPORT",
+          "PARKING_LOT",
+          "CARPOOL_PARKING",
+          "FUEL_STATION",
+          "WIFI"
+        ]
+      },
+      "EnvironmentalImpactCategory": {
+        "type": "string",
+        "description": "Categories of environmental impact values.",
+        "enum": [
+          "NUCLEAR_WASTE",
+          "CARBON_DIOXIDE"
+        ]
+      },
+      "EnvironmentalImpact": {
+        "type": "object",
+        "description": "Amount of waste produced/emitted per kWh.",
+        "properties": {
+          "category": {
+            "description": "The environmental impact category of this value.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnvironmentalImpactCategory"
+              }
+            ]
+          },
+          "amount": {
+            "description": "Amount of this portion in g/kWh.",
+            "type": "number"
+          }
+        }
+      },
+      "EnergySourceCategory": {
+        "description": "Categories of energy sources.",
+        "type": "string",
+        "enum": [
+          "NUCLEAR",
+          "GENERAL_FOSSIL",
+          "COAL",
+          "GAS",
+          "GENERAL_GREEN",
+          "SOLAR",
+          "WIND",
+          "WATER"
+        ]
+      },
+      "EnergySource": {
+        "description": "Key-value pairs (enum + percentage) of energy sources. All given values of all categories should add up to 100 percent.",
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The type of energy source.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnergySourceCategory"
+              }
+            ]
+          },
+          "percentage": {
+            "description": "Percentage of this source (0-100) in the mix.",
+            "type": "number"
+          }
+        }
+      },
+      "EnergyMix": {
+        "description": "This type is used to specify the energy mix and environmental impact of the supplied energy at a location or in a tariff.",
+        "type": "object",
+        "properties": {
+          "is_green_energy": {
+            "type": "boolean",
+            "description": "True if 100% from regenerative sources. (CO2 and nuclear waste is zero)"
+          },
+          "energy_sources": {
+            "description": "Key-value pairs (enum + percentage) of energy sources of this locationâ€™s tariff.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnergySource"
+              }
+            ]
+          },
+          "environ_impact": {
+            "description": "Key-value pairs (enum + percentage) of nuclear waste and CO2 exhaust of this locationâ€™s tariff.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EnvironmentalImpact"
+              }
+            ]
+          },
+          "supplier_name": {
+            "type": "string",
+            "description": "Name of the energy supplier, delivering the energy for this location or tariff.*"
+          },
+          "energy_product_name": {
+            "type": "string",
+            "description": "Name of the energy suppliers product/tariff plan used at this location.*"
           }
         }
       }
