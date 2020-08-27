@@ -343,6 +343,154 @@
             "description": "Not Found"
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Push new/updated Location to the eMSP.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO providing data to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO providing data to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Location Request Body to push.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Notify the eMSP of partial updates to a Location.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO providing update to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO providing update to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Location Request Body to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
       }
     },
     "/emsp/{version}/locations/{country_code}/{party_id}/{evse_uid}": {
@@ -416,6 +564,176 @@
         }
       }
     },
+    "/emsp/{version}/locations/{country_code}/{party_id}/{location_id}/{evse_uid}": {
+      "put": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Push new/updated EVSE to the eMSP.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO providing data to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO providing data to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Id of the EVSE object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "EVSE Request Body to push.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EVSE"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Notify the eMSP of partial updates to a EVSE.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO providing update to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO providing update to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Id of the EVSE object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "EVSE Request Body to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EVSE"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/emsp/{version}/locations/{country_code}/{party_id}/{connector_id}": {
       "get": {
         "tags": [
@@ -474,6 +792,196 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/emsp/{version}/locations/{country_code}/{party_id}/{location_id}/{evse_uid}/{connector_id}": {
+      "put": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Push new/updated Connector to the eMSP.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO providing data to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO providing data to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Id of the EVSE object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "EVSE Request Body to push.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Connector"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Notify the eMSP of partial updates to a Connector.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO providing update to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO providing update to the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Id of the EVSE object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Connector Request Body to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Connector"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
           },
           "401": {
             "description": "Unauthorized"
@@ -1308,6 +1816,285 @@
             "description": "Name of the energy suppliers product/tariff plan used at this location.*"
           }
         }
+      },
+      "Session": {
+        "type": "object",
+        "description": "The Session object describes one charging session. That doesnâ€™t mean it is required that energy has been transferred between EV and the Charge Point. It is possible that the EV never took energy from the Charge Point because it was instructed not to take energy by the driver. But as the EV was connected to the Charge Point, some form of start tariff, park tariff or reservation cost might be relevant.",
+        "properties": {
+          "country_code": {
+            "type": "string",
+            "description": "ISO-3166 alpha-2 country code of the CPO that \"owns\" this Session.",
+            "example": "IN"
+          },
+          "party_id": {
+            "type": "string",
+            "description": "CPO ID of the CPO that \"owns\" this Session (following the ISO-15118 standard).",
+            "example": "CPO1"
+          },
+          "id": {
+            "type": "string",
+            "description": "The unique id that identifies the charging session in the CPO platform.",
+            "example": "id11"
+          },
+          "start_date_time": {
+            "type": "string",
+            "format": "DateTime",
+            "example": "2019-12-29T17:45:09.2",
+            "description": "The timestamp when the session became ACTIVE in the Charge Point. When the session is still PENDING, this field SHALL be set to the time the Session was created at the Charge Point. When a Session goes from PENDING to ACTIVE, this field SHALL be update to the moment the Session went to ACTIVE in the Charge Point."
+          },
+          "end_date_time": {
+            "type": "string",
+            "format": "DateTime",
+            "example": "2019-12-29T19:45:09.2",
+            "description": "The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid. "
+          },
+          "kwh": {
+            "type": "number",
+            "example": 2,
+            "description": "How many kWh were charged."
+          },
+          "cdr_token": {
+            "description": "Token used to start this charging session, including all the relevant information to identify the unique token.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CdrToken"
+              }
+            ]
+          },
+          "auth_method": {
+            "description": "Method used for authentication.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AuthMethod"
+              }
+            ]
+          },
+          "authorization_reference": {
+            "type": "string",
+            "description": "Reference to the authorization given by the eMSP. When the eMSP provided an authorization_reference in either: real-time authorization or StartSession, this field SHALL contain the same value. When different authorization_reference values have been given by the eMSP that are relevant to this Session, the last given value SHALL be used here."
+          },
+          "location_id": {
+            "type": "string",
+            "description": "Id of the Location object of this CPO, on which the charging session is/was happening.",
+            "example": "LOC1"
+          },
+          "evse_uid": {
+            "type": "string",
+            "example": 123,
+            "description": "uid of the EVSE of this Location on which the charging session is/was happening."
+          },
+          "connector_id": {
+            "type": "string",
+            "example": 12,
+            "description": "Id of the Connector of this Location the charging session is/was happening."
+          },
+          "meter_id": {
+            "type": "string",
+            "example": 111,
+            "description": "Optional identification of the kWh meter."
+          },
+          "currency": {
+            "type": "string",
+            "example": "INR",
+            "description": "ISO 4217 code of the currency used for this session."
+          },
+          "charging_periods": {
+            "type": "array",
+            "description": "An optional list of Charging Periods that can be used to calculate and verify the total cost.",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ChargingPeriod"
+                }
+              ]
+            }
+          },
+          "total_cost": {
+            "description": "The total cost of the session in the specified currency. This is the price that the eMSP will have to pay to the CPO. A total_cost of 0.00 means free of charge. When omitted, i.e. no price information is given in the Session object, it does not imply the session is/was free of charge.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Price"
+              }
+            ]
+          },
+          "status": {
+            "description": "The status of the session.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionStatus"
+              }
+            ]
+          },
+          "last_updated": {
+            "description": "Timestamp when this Session was last updated (or created).",
+            "type": "string",
+            "example": "2020-01-01T01:08:01.123"
+          }
+        }
+      },
+      "Price": {
+        "type": "object",
+        "properties": {
+          "excl_vat": {
+            "description": "Price/Cost excluding VAT.",
+            "type": "number"
+          },
+          "incl_vat": {
+            "description": "Price/Cost including VAT.",
+            "type": "number"
+          }
+        }
+      },
+      "ChargingPeriod": {
+        "type": "object",
+        "description": "A Charging Period consists of a start timestamp and a list of possible values that influence this period, for example: amount of energy charged this period, maximum current during this period etc.",
+        "properties": {
+          "start_date_time": {
+            "type": "string",
+            "description": "Start timestamp of the charging period. A period ends when the next period starts. The last period ends when the session ends.",
+            "example": "2020-01-01T01:08:01.123Z"
+          },
+          "dimensions": {
+            "type": "array",
+            "description": "List of relevant values for this charging period.",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/CdrDimension"
+                }
+              ]
+            }
+          },
+          "tariff_id": {
+            "type": "string",
+            "description": "Unique identifier of the Tariff that is relevant for this Charging Period. If not provided, no Tariff is relevant during this period.",
+            "example": "t123"
+          }
+        }
+      },
+      "CdrDimension": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Type of CDR dimension.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CdrDimensionType"
+              }
+            ]
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume of the dimension consumed, measured according to the dimension type."
+          }
+        }
+      },
+      "CdrDimensionType": {
+        "type": "string",
+        "enum": [
+          "CURRENT",
+          "ENERGY",
+          "ENERGY_EXPORT",
+          "ENERGY_IMPORT",
+          "MAX_CURRENT",
+          "MIN_CURRENT",
+          "MAX_POWER",
+          "MIN_POWER",
+          "PARKING_TIME",
+          "POWER",
+          "RESERVATION_TIME",
+          "STATE_OF_CHARGE",
+          "TIME"
+        ]
+      },
+      "AuthMethod": {
+        "type": "string",
+        "enum": [
+          "AUTH_REQUEST",
+          "COMMAND",
+          "WHITELIST"
+        ]
+      },
+      "CdrToken": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "example": "uid123",
+            "description": "Unique ID by which this Token can be identified. This is the field used by the CPOâ€™s system (RFID reader on the Charge Point) to identify this token. Currently, in most cases: type=RFID, this is the RFID hidden ID as read by the RFID reader, but that is not a requirement. If this is a type=APP_USER Token, it will be a unique, by the eMSP, generated ID."
+          },
+          "type": {
+            "description": "Type of the token",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TokenType"
+              }
+            ]
+          },
+          "contact_id": {
+            "type": "string",
+            "description": "Uniquely identifies the EV driver contract token within the eMSPâ€™s platform (and suboperator platforms).",
+            "example": "121aaa"
+          }
+        }
+      },
+      "ChargingPreferences": {
+        "type": "object",
+        "description": "Contains the charging preferences of an EV driver.",
+        "properties": {
+          "profile_type": {
+            "description": "Type of Smart Charging Profile selected by the driver. The ProfileType has to be supported at the Connector and for every supported ProfileType, a Tariff MUST be provided. This gives the EV driver the option between different pricing options.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProfileType"
+              }
+            ]
+          },
+          "departure_time": {
+            "type": "string",
+            "format": "DateTime",
+            "example": "2020-08-27T17:45:09.2Z",
+            "description": "Expected departure. The driver has given this Date/Time as expected departure moment. It is only an estimation and not necessarily the Date/Time of the actual departure."
+          },
+          "energy_need": {
+            "type": "number",
+            "description": "Requested amount of energy in kWh. The EV driver wants to have this amount of energy charged.",
+            "example": 1
+          },
+          "discharge_allowed": {
+            "type": "boolean",
+            "description": "The driver allows their EV to be discharged when needed, as long as the other preferences are met: EV is charged with the preferred energy (energy_need) until the preferred departure moment (departure_time). Default if omitted: false"
+          }
+        }
+      },
+      "ChargingPreferencesResponse": {
+        "type": "string",
+        "enum": [
+          "ACCEPTED",
+          "DEPARTURE_REQUIRED",
+          "ENERGY_NEED_REQUIRED",
+          "NOT_POSSIBLE",
+          "PROFILE_TYPE_NOT_SUPPORTED"
+        ]
+      },
+      "ProfileType": {
+        "type": "string",
+        "enum": [
+          "CHEAP",
+          "FAST",
+          "GREEN",
+          "REGULAR"
+        ]
+      },
+      "SessionStatus": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "COMPLETED",
+          "INVALID",
+          "PENDING",
+          "RESERVATION"
+        ]
       }
     },
     "securitySchemes": {
