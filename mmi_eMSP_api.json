@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "MapmyIndia Electric Vehicle & Charging Station APIs",
-    "description": "<h2>Security Type</h2> <p>This APIs follow OAuth2 based security. <b>To know more on how to create your authorization tokens, please click the `Authorize` button below. More details available <a href=https://www.mapmyindia.com/api/advanced-maps/doc/authentication-api.php>here</a></b> </br><li><a href=https://www.mapmyindia.com/api/login>Login/Sing Up</a> for API key and other access.<p></br>",
+    "description": "<p><img alt=\"Charging Topology\" src=\"https://raw.githubusercontent.com/exploremapmyindia/eMSP/master/charging_topology.PNG\"><span class=\"caption\"><i>Figure: Charging Topology schematic</i></span><p><h2>Security Type</h2> <p>This APIs follow OAuth2 based security. <b>To know more on how to create your authorization tokens, please click the `Authorize` button below. More details available <a href=https://www.mapmyindia.com/api/advanced-maps/doc/authentication-api.php>here</a></b> </br><li><a href=https://www.mapmyindia.com/api/login>Login/Sing Up</a> for API key and other access.<p></br>",
     "termsOfService": "https://www.mapmyindia.com/api/terms-&-conditions",
     "contact": {
       "name": "MapmyIndia API Support",
@@ -44,7 +44,7 @@
     }
   ],
   "paths": {
-    "/{version}/cpo/locations": {
+    "/cpo/{version}/locations": {
       "get": {
         "tags": [
           "Location"
@@ -121,12 +121,165 @@
         }
       }
     },
-    "/{version}/cpo/{country_code}/{party_id}/{location_id}/{evse_uid}/{connector_id}": {
+    "/cpo/{version}/locations/{location_id}": {
       "get": {
         "tags": [
           "Location"
         ],
-        "summary": "Fetch a list of Locations, last updated between the {date_from} and {date_to} (paginated) from CPO.",
+        "summary": "Get a specific Location from CPO.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/cpo/{version}/locations/{evse_uid}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Get a specific EVSE from CPO.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Id of the EVSE object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EVSE"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/cpo/{version}/locations/{connector_id}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Get a specific Connector from CPO.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Connector"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/emsp/{version}/locations/{country_code}/{party_id}/{location_id}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Retrieve a Location as it is stored in the eMSP system.",
         "parameters": [
           {
             "name": "version",
@@ -167,11 +320,42 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/emsp/{version}/locations/{country_code}/{party_id}/{evse_uid}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Retrieve a EVSE as it is stored in the eMSP system.",
+        "parameters": [
           {
-            "name": "evse_uid",
+            "name": "version",
             "in": "path",
-            "description": "Required when requesting an EVSE or Connector object.",
+            "description": "version of the API.",
             "required": true,
             "allowEmptyValue": false,
             "schema": {
@@ -179,9 +363,29 @@
             }
           },
           {
-            "name": "connector_id",
+            "name": "country_code",
             "in": "path",
-            "description": "Required when requesting a Connector object.",
+            "description": "Country code of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_uid",
+            "in": "path",
+            "description": "Id of the EVSE object to retrieve.",
             "required": true,
             "allowEmptyValue": false,
             "schema": {
@@ -195,7 +399,78 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Location"
+                  "$ref": "#/components/schemas/EVSE"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/emsp/{version}/locations/{country_code}/{party_id}/{connector_id}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Retrieve a Connector as it is stored in the eMSP system.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "country_code",
+            "in": "path",
+            "description": "Country code of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "party_id",
+            "in": "path",
+            "description": "Party ID (Provider ID) of the CPO requesting data from the eMSP system.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Connector"
                 }
               }
             }
