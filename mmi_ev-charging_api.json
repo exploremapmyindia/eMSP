@@ -104,7 +104,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Location"
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -994,6 +1001,456 @@
           }
         }
       }
+    },
+    "/{version}/sessions/start": {
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Start Session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Start Session Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SessionStartBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionStart"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/stop": {
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Stop Session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Start Session Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SessionStopBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionStop"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/rate": {
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Rate Session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Start Session Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SessionRateBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/status": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Session Status.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "query",
+            "description": "Unique ID assigned to a session.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionStatus"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Fetch list of session details last updated between the {date_from} and {date_to} (paginated).",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "description": "Only return Sessions that have last_updated after or equal to this Date/Time (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "description": "Only return Sessions that have last_updated up to this Date/Time, but not including (exclusive).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset of the first object returned. Default is 0.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of objects to GET.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Session"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/{session_id}": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Fetch a single session details with Session.id equal to {session_id}.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "path",
+            "description": "Unique Id of the session object to get.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Push a single session details",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "path",
+            "description": "Unique Id of the session object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Session request body to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "$ref": "#/components/schemas/Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Update a single session details.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "path",
+            "description": "Unique Id of the session object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Session request body to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "$ref": "#/components/schemas/Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Updated"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1871,7 +2328,7 @@
           },
           "authorization_reference": {
             "type": "string",
-            "description": "Reference to the authorization given by the eMSP. When the eMSP provided an authorization_reference in either: real-time authorization or StartSession, this field SHALL contain the same value. When different authorization_reference values have been given by the eMSP that are relevant to this Session, the last given value SHALL be used here."
+            "description": "Reference to the authorization given by the eMSP. When the eMSP provided an authorization_reference in either: real-time authorization or SessionStart, this field SHALL contain the same value. When different authorization_reference values have been given by the eMSP that are relevant to this Session, the last given value SHALL be used here."
           },
           "location_id": {
             "type": "string",
@@ -2095,6 +2552,98 @@
           "PENDING",
           "RESERVATION"
         ]
+      },
+      "SessionStartBody": {
+        "type": "object",
+        "properties": {
+          "connector_id": {
+            "type": "string"
+          }
+        }
+      },
+      "SessionStopBody": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string"
+          }
+        }
+      },
+      "SessionRateBody": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "example": 101
+          },
+          "rating": {
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        }
+      },
+      "SessionStart": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "example": 101
+          },
+          "connector_id": {
+            "type": "string",
+            "example": 1
+          },
+          "start_date_time": {
+            "type": "string",
+            "format": "DateTime",
+            "example": "2020-03-09T10:17:09Z"
+          },
+          "end_date_time": {
+            "type": "string",
+            "format": "DateTime",
+            "example": null
+          },
+          "status": {
+            "$ref": "#/components/schemas/SessionStatus"
+          }
+        }
+      },
+      "SessionStop": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "example": 101
+          },
+          "connector_id": {
+            "type": "string",
+            "example": 1
+          },
+          "start_date_time": {
+            "type": "string",
+            "format": "DateTime",
+            "example": "2020-03-09T10:17:09Z"
+          },
+          "end_date_time": {
+            "type": "string",
+            "format": "DateTim",
+            "example": "2020-03-09T10:30:09Z"
+          },
+          "status": {
+            "example": "COMPLETED",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SessionStatus"
+              }
+            ]
+          }
+        }
       }
     },
     "securitySchemes": {
@@ -2109,9 +2658,9 @@
           }
         }
       },
-      "api_key": {
+      "Authorization": {
         "type": "apiKey",
-        "name": "api_key",
+        "name": "Authorization",
         "in": "header"
       }
     }
