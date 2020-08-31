@@ -2078,6 +2078,88 @@
           }
         }
       },
+      "CdrLocation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": 1234,
+            "description": "Uniquely identifies the location. This field can never be changed, modified or renamed."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the location.",
+            "example": "Delta Charger"
+          },
+          "address": {
+            "type": "string",
+            "description": "Street/block name and house number if available.",
+            "example": "Block G, Minto Road"
+          },
+          "city": {
+            "type": "string",
+            "description": "City or town",
+            "example": "New Delhi"
+          },
+          "postal_code": {
+            "type": "string",
+            "description": "Postal code of the location, may only be omitted when the location has no postal code: in some countries charging locations at highways donâ€™t have postal codes.",
+            "example": "110055"
+          },
+          "state": {
+            "type": "string",
+            "description": "State or province of the location, only to be used when relevant.",
+            "example": "Delhi"
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-3 code for the country of this location.",
+            "example": "IND"
+          },
+          "coordinates": {
+            "description": "Coordinates of the location.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GeoLocation"
+              }
+            ]
+          },
+          "evse_uid": {
+            "type": "string",
+            "example": 123,
+            "description": "Uniquely identifies the EVSE. For example a database unique ID or the actual EVSE ID. This field can never be changed, modified or renamed. This is the technical identification of the EVSE, not to be used as human readable identification, use the field: evse_id for that."
+          },
+          "evse_id": {
+            "type": "string",
+            "example": "BE*BEC*E041503001",
+            "description": "Unique EVSE ID, if an evse_id is to be re-used in the real world, the evse_id can be removed from an EVSE object if the status is set to REMOVED."
+          },
+          "connector_id": {
+            "type": "string",
+            "example": 12,
+            "description": "Identifier of the connector within the EVSE."
+          },
+          "connector_standard": {
+            "description": "The standard of the installed connector.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectorType"
+              }
+            ]
+          },
+          "connector_format": {
+            "description": "The format (socket/cable) of the installed connector.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConnectorFormat"
+              }
+            ]
+          },
+          "connector_power_type": {
+            "$ref": "#/components/schemas/PowerType"
+          }
+        }
+      },
       "ChargingPeriod": {
         "type": "object",
         "description": "A Charging Period consists of a start timestamp and a list of possible values that influence this period, for example: amount of energy charged this period, maximum current during this period etc.",
@@ -2085,7 +2167,7 @@
           "start_date_time": {
             "type": "string",
             "description": "Start timestamp of the charging period. A period ends when the next period starts. The last period ends when the session ends.",
-            "example": "2020-01-01T01:08:01.123Z"
+            "example": "2020-01-01T01:08:01.123"
           },
           "dimensions": {
             "type": "array",
@@ -2318,6 +2400,54 @@
                 "$ref": "#/components/schemas/SessionStatus"
               }
             ]
+          }
+        }
+      },
+      "SignedData": {
+        "type": "object",
+        "description": "This class contains all the information of the signed data. Which encoding method is used, if needed, the public key and a list of signed values.",
+        "properties": {
+          "encoding_method": {
+            "type": "string",
+            "description": "The name of the encoding used in the SignedData field. This is the name given to the encoding by a company or group of companies. See note below."
+          },
+          "encoding_method_version": {
+            "type": "integer",
+            "description": "Version of the EncodingMethod (when applicable)"
+          },
+          "public_key": {
+            "type": "string",
+            "description": "Public key used to sign the data, base64 encoded."
+          },
+          "signed_values": {
+            "description": "One or more signed values.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignedValue"
+              }
+            ]
+          },
+          "url": {
+            "type": "string",
+            "description": "URL that can be shown to an EV driver. This URL gives the EV driver the possibility to check the signed data from a charging session."
+          }
+        }
+      },
+      "SignedValue": {
+        "type": "object",
+        "description": "This class contains the signed and the plain/unsigned data. By decoding the data, the receiver can check if the content has not been altered.",
+        "properties": {
+          "nature": {
+            "type": "string",
+            "description": "Nature of the value, in other words, the event this value belongs to. Possible values at moment of writing: - Start (value at the start of the Session) - End (signed value at the end of the Session) - Intermediate (signed values take during the Session, after Start, before End) Others might be added later."
+          },
+          "plain_data": {
+            "type": "string",
+            "description": "The unencoded string of data. The format of the content depends on the EncodingMethod field."
+          },
+          "signed_data": {
+            "type": "string",
+            "description": "Blob of signed data, base64 encoded. The format of the content depends on the EncodingMethod field."
           }
         }
       },
