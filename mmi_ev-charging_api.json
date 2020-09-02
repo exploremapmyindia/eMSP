@@ -883,7 +883,7 @@
         "tags": [
           "Session"
         ],
-        "summary": "Set/update the driverâ€™s Charging Preferences for this charging session.",
+        "summary": "Set/update the driver's Charging Preferences for this charging session.",
         "parameters": [
           {
             "name": "version",
