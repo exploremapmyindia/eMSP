@@ -32,7 +32,7 @@
   "tags": [
     {
       "name": "Location",
-      "description": "Module contains APIs related to charging station data along with machines & connectors information and status."
+      "description": "Module contains APIs related to charging station data along with machines-connectors information & status."
     },
     {
       "name": "Session",
@@ -859,6 +859,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SessionStatus"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/{session_id}/preference": {
+      "put": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Set/update the driverâ€™s Charging Preferences for this charging session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "path",
+            "description": "Unique Id of the ongoing session.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Charging Preference Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ChargingPreferences"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChargingPreferencesResponse"
                 }
               }
             }
