@@ -2983,11 +2983,13 @@
           },
           "supplier_name": {
             "type": "string",
-            "description": "Name of the energy supplier, delivering the energy for this location or tariff.*"
+            "description": "Name of the energy supplier, delivering the energy for this location or tariff.*",
+            "example": "EESL"
           },
           "energy_product_name": {
             "type": "string",
-            "description": "Name of the energy suppliers product/tariff plan used at this location.*"
+            "description": "Name of the energy suppliers product/tariff plan used at this location.*",
+            "example": "Eco-Power"
           }
         }
       },
@@ -3470,55 +3472,71 @@
         "type": "object",
         "properties": {
           "brand_nme": {
-            "type": "string"
+            "type": "string",
+            "example": "Honda"
           },
           "partner_ref_id": {
-            "type": "string"
+            "type": "string",
+            "example": 12345
           },
           "paytm": {
-            "type": "string"
+            "type": "boolean"
           },
           "cash": {
-            "type": "string"
+            "type": "boolean"
           },
           "sheltered": {
-            "type": "string"
+            "type": "boolean"
           },
           "parking_slot_no": {
-            "type": "string"
+            "type": "string",
+            "example": 2
           },
           "own_typ": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
           },
           "alt_nme": {
-            "type": "string"
+            "type": "string",
+            "example": "Delta Electric"
           },
           "desc": {
             "type": "string"
           },
           "brand_id": {
-            "type": "string"
+            "type": "string",
+            "example": 111
           },
           "sbrand_id": {
-            "type": "string"
+            "type": "string",
+            "example": 11
           },
           "sbrand_nme": {
-            "type": "string"
+            "type": "string",
+            "example": "Acura"
           },
           "record_type": {
-            "type": "string"
+            "type": "string",
+            "example": 5
           },
           "cop": {
             "type": "string"
           },
           "pip_eloc": {
-            "type": "string"
+            "type": "string",
+            "example": "AAC123"
           },
           "priority": {
             "type": "string"
           },
           "createdOn": {
-            "type": "string"
+            "type": "string",
+            "example": 12232020
           },
           "c_keywords": {
             "type": "string"
@@ -3527,34 +3545,54 @@
             "type": "string"
           },
           "fax": {
-            "type": "string"
+            "type": "string",
+            "example": 43121211
           },
           "pay": {
-            "type": "string"
+            "type": "string",
+            "example": "AC-40"
           },
           "pay_duration": {
-            "type": "string"
+            "type": "string",
+            "example": "AC-1"
           },
           "free": {
-            "type": "string"
+            "type": "boolean"
           },
           "pay_mode": {
             "type": "string"
           },
           "rate_type": {
-            "type": "string"
+            "type": "string",
+            "example": "Time"
           },
           "free_for": {
-            "type": "string"
+            "type": "string",
+            "example": "Honda"
           },
           "paid": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              0,
+              1,
+              2
+            ]
           },
           "privatevspublic": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              0,
+              1,
+              2
+            ]
           },
           "bld_typ": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              0,
+              1,
+              2
+            ]
           },
           "pip_typ": {
             "type": "string"
