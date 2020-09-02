@@ -31,16 +31,20 @@
   ],
   "tags": [
     {
-      "name": "Location"
+      "name": "Location",
+      "description": "Module contains APIs related to charging station data along with machines & connectors information and status."
     },
     {
-      "name": "Session"
+      "name": "Session",
+      "description": "Module contains APIs related to ongoing session along with start, stop and status of the session. The information is dynamic."
     },
     {
-      "name": "CDR"
+      "name": "CDR",
+      "description": "Module contains APIs related to \"Charging Detail Record\" (i.e. description of a concluded charging session)."
     },
     {
-      "name": "Tariff"
+      "name": "Tariff",
+      "description": "Module contains APIs related to Tariff Data which includes Pricing, Taxes, Cost(Energy, Parking etc.)"
     }
   ],
   "paths": {
@@ -1262,7 +1266,7 @@
         "tags": [
           "CDR"
         ],
-        "summary": "Fetch a single CDR  with cdr.id equal to {id}.",
+        "summary": "Fetch a single CDR with CDR {id}.",
         "parameters": [
           {
             "name": "version",
@@ -1295,6 +1299,241 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/tariffs": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Fetch list of Tariff objects last updated between the {date_from} and {date_to} (paginated).",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "description": "Only return Tariff that have last_updated after or equal to this Date/Time (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "description": "Only return Tariff that have last_updated up to this Date/Time, but not including (exclusive).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset of the first object returned. Default is 0.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of objects to GET.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Tariff"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/tariffs/{tariff_id}": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Fetch a single Tariff with {tariff_id}.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tariff_id",
+            "in": "path",
+            "description": "Unique Id of the Tariff object to get.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tariff"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Push a single Tariff Data.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tariff_id",
+            "in": "path",
+            "description": "Unique Id of the Tariff object to get.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Tariff request body to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "$ref": "#/components/schemas/Tariff"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Remove a single Tariff Data.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tariff_id",
+            "in": "path",
+            "description": "Unique Id of the Tariff object to get.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Deleted"
           },
           "401": {
             "description": "Unauthorized"
