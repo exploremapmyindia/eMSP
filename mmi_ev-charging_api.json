@@ -1925,18 +1925,6 @@
               }
             ]
           },
-          "auth_method": {
-            "description": "Method used for authentication.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AuthMethod"
-              }
-            ]
-          },
-          "authorization_reference": {
-            "type": "string",
-            "description": "Reference to the authorization given by the eMSP. When the eMSP provided an authorization_reference in either: real-time authorization or SessionStart, this field SHALL contain the same value. When different authorization_reference values have been given by the eMSP that are relevant to this Session, the last given value SHALL be used here."
-          },
           "location_id": {
             "type": "string",
             "description": "Id of the Location object of this CPO, on which the charging session is/was happening.",
@@ -2039,18 +2027,6 @@
                 "$ref": "#/components/schemas/CdrToken"
               }
             ]
-          },
-          "auth_method": {
-            "description": "Method used for authentication.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AuthMethod"
-              }
-            ]
-          },
-          "authorization_reference": {
-            "type": "string",
-            "description": "Reference to the authorization given by the eMSP. When the eMSP provided an authorization_reference in either: real-time authorization or SessionStart, this field SHALL contain the same value. When different authorization_reference values have been given by the eMSP that are relevant to this Session, the last given value SHALL be used here."
           },
           "cdr_location": {
             "description": "Location where the charging session took place, including only the relevant EVSE and Connector.",
