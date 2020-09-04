@@ -48,12 +48,12 @@
     }
   ],
   "paths": {
-    "/{version}/locations": {
+    "/{version}/locations/{connector_id}": {
       "get": {
         "tags": [
           "Location"
         ],
-        "summary": "Fetch a list of Locations, last updated between the {date_from} and {date_to} (paginated).",
+        "summary": "Fetch a specific Connector.",
         "parameters": [
           {
             "name": "version",
@@ -66,39 +66,13 @@
             }
           },
           {
-            "name": "date_from",
-            "in": "query",
-            "description": "Only return Locations that have last_updated after or equal to this Date/Time (inclusive).",
-            "required": false,
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "date_to",
-            "in": "query",
-            "description": "Only return Locations that have last_updated up to this Date/Time, but not including (exclusive).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "The offset of the first object returned. Default is 0.",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Maximum number of objects to GET.",
-            "required": false,
-            "schema": {
-              "type": "integer"
             }
           }
         ],
@@ -108,17 +82,341 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/Location"
-                      }
-                    ]
-                  }
+                  "$ref": "#/components/schemas/Connector"
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/locations/{location_id}/{evse_id}/{connector_id}": {
+      "post": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Create new/updated Connector.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_id",
+            "in": "path",
+            "description": "Id of the EVSE object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "EVSE Request Body to push.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Connector"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Update a Connector.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_id",
+            "in": "path",
+            "description": "Id of the EVSE object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "connector_id",
+            "in": "path",
+            "description": "Id of the Connector object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Connector Request Body to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Connector"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/locations/{evse_id}": {
+      "get": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Fetch a specific EVSE.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_id",
+            "in": "path",
+            "description": "Id of the EVSE object to retrieve.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EVSE"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/locations/{location_id}/{evse_id}": {
+      "post": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Create new/updated EVSE.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_id",
+            "in": "path",
+            "description": "Id of the EVSE object to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "EVSE Request Body to push.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EVSE"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Location"
+        ],
+        "summary": "Update an EVSE.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "Id of the Location object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "evse_id",
+            "in": "path",
+            "description": "Id of the EVSE object to update.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "EVSE Request Body to update.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/EVSE"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
           },
           "401": {
             "description": "Unauthorized"
@@ -182,7 +480,7 @@
           }
         }
       },
-      "put": {
+      "post": {
         "tags": [
           "Location"
         ],
@@ -291,662 +589,12 @@
         }
       }
     },
-    "/{version}/locations/{evse_uid}": {
+    "/{version}/locations": {
       "get": {
         "tags": [
           "Location"
         ],
-        "summary": "Fetch a specific EVSE.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "evse_uid",
-            "in": "path",
-            "description": "Id of the EVSE object to retrieve.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EVSE"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/locations/{connector_id}": {
-      "get": {
-        "tags": [
-          "Location"
-        ],
-        "summary": "Fetch a specific Connector.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "connector_id",
-            "in": "path",
-            "description": "Id of the Connector object to retrieve.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Connector"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/locations/{location_id}/{evse_uid}": {
-      "put": {
-        "tags": [
-          "Location"
-        ],
-        "summary": "Create new/updated EVSE.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "location_id",
-            "in": "path",
-            "description": "Id of the Location object to push.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "evse_uid",
-            "in": "path",
-            "description": "Id of the EVSE object to push.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "EVSE Request Body to push.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/EVSE"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Location"
-        ],
-        "summary": "Update an EVSE.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "location_id",
-            "in": "path",
-            "description": "Id of the Location object to update.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "evse_uid",
-            "in": "path",
-            "description": "Id of the EVSE object to update.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "EVSE Request Body to update.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/EVSE"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/locations/{location_id}/{evse_uid}/{connector_id}": {
-      "put": {
-        "tags": [
-          "Location"
-        ],
-        "summary": "Create new/updated Connector.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "location_id",
-            "in": "path",
-            "description": "Id of the Location object to push.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "evse_uid",
-            "in": "path",
-            "description": "Id of the EVSE object to push.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "connector_id",
-            "in": "path",
-            "description": "Id of the Connector object to push.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "EVSE Request Body to push.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Connector"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Location"
-        ],
-        "summary": "Update a Connector.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "location_id",
-            "in": "path",
-            "description": "Id of the Location object to update.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "evse_uid",
-            "in": "path",
-            "description": "Id of the EVSE object to update.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "connector_id",
-            "in": "path",
-            "description": "Id of the Connector object to update.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "Connector Request Body to update.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Connector"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/sessions/start": {
-      "put": {
-        "tags": [
-          "Session"
-        ],
-        "summary": "Start Session.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "Start Session Request Body.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/SessionStartBody"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionStart"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/sessions/stop": {
-      "put": {
-        "tags": [
-          "Session"
-        ],
-        "summary": "Stop Session.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "Start Session Request Body.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/SessionStopBody"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionStop"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/sessions/rate": {
-      "put": {
-        "tags": [
-          "Session"
-        ],
-        "summary": "Rate Session.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "Start Session Request Body.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/SessionRateBody"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/sessions/status": {
-      "get": {
-        "tags": [
-          "Session"
-        ],
-        "summary": "Session Status.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "session_id",
-            "in": "query",
-            "description": "Unique ID assigned to a session.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionStatus"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/sessions/{session_id}/preference": {
-      "put": {
-        "tags": [
-          "Session"
-        ],
-        "summary": "Set/update the driver's Charging Preferences for this charging session.",
-        "parameters": [
-          {
-            "name": "version",
-            "in": "path",
-            "description": "version of the API.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "session_id",
-            "in": "path",
-            "description": "Unique Id of the ongoing session.",
-            "required": true,
-            "allowEmptyValue": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "body",
-            "in": "header",
-            "description": "Charging Preference Request Body.",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ChargingPreferences"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChargingPreferencesResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/{version}/sessions": {
-      "get": {
-        "tags": [
-          "Session"
-        ],
-        "summary": "Fetch list of session details last updated between the {date_from} and {date_to} (paginated).",
+        "summary": "Fetch a list of Locations, last updated between the {date_from} and {date_to} (paginated).",
         "parameters": [
           {
             "name": "version",
@@ -961,7 +609,7 @@
           {
             "name": "date_from",
             "in": "query",
-            "description": "Only return Sessions that have last_updated after or equal to this Date/Time (inclusive).",
+            "description": "Only return Locations that have last_updated after or equal to this Date/Time (inclusive).",
             "required": false,
             "schema": {
               "type": "string"
@@ -970,7 +618,7 @@
           {
             "name": "date_to",
             "in": "query",
-            "description": "Only return Sessions that have last_updated up to this Date/Time, but not including (exclusive).",
+            "description": "Only return Locations that have last_updated up to this Date/Time, but not including (exclusive).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1005,7 +653,7 @@
                   "items": {
                     "allOf": [
                       {
-                        "$ref": "#/components/schemas/Session"
+                        "$ref": "#/components/schemas/Location"
                       }
                     ]
                   }
@@ -1075,7 +723,7 @@
           }
         }
       },
-      "put": {
+      "post": {
         "tags": [
           "Session"
         ],
@@ -1186,12 +834,217 @@
         }
       }
     },
-    "/{version}/cdrs": {
+    "/{version}/sessions/status": {
       "get": {
         "tags": [
-          "CDR"
+          "Session"
         ],
-        "summary": "Fetch list of CDRs last updated between the {date_from} and {date_to} (paginated).",
+        "summary": "Session Status.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "session_id",
+            "in": "query",
+            "description": "Unique ID assigned to a session.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionStatus"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/start": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Start Session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Start Session Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SessionStartBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionStart"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/stop": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Stop Session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Start Session Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SessionStopBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionStop"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions/rate": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Rate Session.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Start Session Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SessionRateBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{version}/sessions": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Fetch list of session details last updated between the {date_from} and {date_to} (paginated).",
         "parameters": [
           {
             "name": "version",
@@ -1206,7 +1059,7 @@
           {
             "name": "date_from",
             "in": "query",
-            "description": "Only return CDRs that have last_updated after or equal to this Date/Time (inclusive).",
+            "description": "Only return Sessions that have last_updated after or equal to this Date/Time (inclusive).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1215,7 +1068,7 @@
           {
             "name": "date_to",
             "in": "query",
-            "description": "Only return CDRs that have last_updated up to this Date/Time, but not including (exclusive).",
+            "description": "Only return Sessions that have last_updated up to this Date/Time, but not including (exclusive).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1250,7 +1103,7 @@
                   "items": {
                     "allOf": [
                       {
-                        "$ref": "#/components/schemas/CDR"
+                        "$ref": "#/components/schemas/Session"
                       }
                     ]
                   }
@@ -1268,12 +1121,14 @@
             "description": "Not Found"
           }
         }
-      },
+      }
+    },
+    "/{version}/sessions/{session_id}/preference": {
       "post": {
         "tags": [
-          "CDR"
+          "Session"
         ],
-        "summary": "Push a single CDR.",
+        "summary": "Set/update the driver's Charging Preferences for this charging session.",
         "parameters": [
           {
             "name": "version",
@@ -1286,13 +1141,22 @@
             }
           },
           {
-            "name": "body",
-            "in": "header",
-            "description": "Session request body to push.",
+            "name": "session_id",
+            "in": "path",
+            "description": "Unique Id of the ongoing session.",
             "required": true,
             "allowEmptyValue": false,
             "schema": {
-              "$ref": "#/components/schemas/CDR"
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Charging Preference Request Body.",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ChargingPreferences"
             }
           }
         ],
@@ -1302,15 +1166,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "URL",
-                  "example": "https://www.server.com/mmi/2.2/cdrs/123456"
+                  "$ref": "#/components/schemas/ChargingPreferencesResponse"
                 }
               }
             }
           },
-          "201": {
-            "description": "Created"
+          "204": {
+            "description": "No Content"
           },
           "401": {
             "description": "Unauthorized"
@@ -1375,12 +1237,66 @@
         }
       }
     },
-    "/{version}/tariffs": {
+    "/{version}/cdrs": {
+      "post": {
+        "tags": [
+          "CDR"
+        ],
+        "summary": "Push a single CDR.",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "header",
+            "description": "Session request body to push.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "$ref": "#/components/schemas/CDR"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "URL",
+                  "example": "https://www.server.com/mmi/2.2/cdrs/123456"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
       "get": {
         "tags": [
-          "Tariff"
+          "CDR"
         ],
-        "summary": "Fetch list of Tariff objects last updated between the {date_from} and {date_to} (paginated).",
+        "summary": "Fetch list of CDRs last updated between the {date_from} and {date_to} (paginated).",
         "parameters": [
           {
             "name": "version",
@@ -1395,7 +1311,7 @@
           {
             "name": "date_from",
             "in": "query",
-            "description": "Only return Tariff that have last_updated after or equal to this Date/Time (inclusive).",
+            "description": "Only return CDRs that have last_updated after or equal to this Date/Time (inclusive).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1404,7 +1320,7 @@
           {
             "name": "date_to",
             "in": "query",
-            "description": "Only return Tariff that have last_updated up to this Date/Time, but not including (exclusive).",
+            "description": "Only return CDRs that have last_updated up to this Date/Time, but not including (exclusive).",
             "required": false,
             "schema": {
               "type": "string"
@@ -1439,7 +1355,7 @@
                   "items": {
                     "allOf": [
                       {
-                        "$ref": "#/components/schemas/Tariff"
+                        "$ref": "#/components/schemas/CDR"
                       }
                     ]
                   }
@@ -1609,6 +1525,90 @@
           }
         }
       }
+    },
+    "/{version}/tariffs": {
+      "get": {
+        "tags": [
+          "Tariff"
+        ],
+        "summary": "Fetch list of Tariff objects last updated between the {date_from} and {date_to} (paginated).",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "version of the API.",
+            "required": true,
+            "allowEmptyValue": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "description": "Only return Tariff that have last_updated after or equal to this Date/Time (inclusive).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "description": "Only return Tariff that have last_updated up to this Date/Time, but not including (exclusive).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The offset of the first object returned. Default is 0.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of objects to GET.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Tariff"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1631,17 +1631,6 @@
             "type": "string",
             "example": "LOC1",
             "description": "Uniquely identifies the location within the CPOs platform (and suboperator platforms). This field can never be changed, modified or renamed."
-          },
-          "publish": {
-            "type": "boolean"
-          },
-          "publish_allowed_to": {
-            "description": "This field may only be used when the publish field is set to false Only owners of Tokens that match all the set fields of one PublishToken in the list are allowed to be shown this location.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PublishTokenType"
-              }
-            ]
           },
           "name": {
             "type": "string",
@@ -1681,14 +1670,6 @@
               }
             ]
           },
-          "related_locations": {
-            "description": "Geographical location of related points relevant to the user.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalGeoLocation"
-              }
-            ]
-          },
           "AddressTokens": {
             "$ref": "#/components/schemas/MMI-AdditionalAddressTokens"
           },
@@ -1711,14 +1692,6 @@
               ]
             }
           },
-          "directions": {
-            "description": "Human-readable directions on how to reach the location.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DisplayText"
-              }
-            ]
-          },
           "operator": {
             "description": "Information of the operator. When not specified, the information retrieved from the Credentials module should be used instead.",
             "allOf": [
@@ -1726,25 +1699,6 @@
                 "$ref": "#/components/schemas/BusinessDetails"
               }
             ]
-          },
-          "suboperator": {
-            "description": "Information of the suboperator if available.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BusinessDetails"
-              }
-            ]
-          },
-          "owner": {
-            "description": "Information of the owner if available.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BusinessDetails"
-              }
-            ]
-          },
-          "rating": {
-            "$ref": "#/components/schemas/SYGIC-AdditionalInfo"
           },
           "facilities": {
             "type": "array",
@@ -1770,10 +1724,6 @@
               }
             ]
           },
-          "charging_when_closed": {
-            "type": "boolean",
-            "description": "Indicates if the EVSEs are still charging outside the opening hours of the location. E.g. when the parking garage closes its barriers over night, is it allowed to charge till the next morning? Default: true"
-          },
           "AdditionalInfo": {
             "$ref": "#/components/schemas/MMI-AdditionalInfo"
           },
@@ -1782,14 +1732,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/Image"
-              }
-            ]
-          },
-          "energy_mix": {
-            "description": "Details on the energy supplied at this location.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EnergyMix"
               }
             ]
           },
@@ -1805,11 +1747,6 @@
         "type": "object",
         "description": "The EVSE object describes the part that controls the power supply to a single EV in a single session. It always belongs to a Location object. The object only contains directions to get from the location itself to the EVSE (i.e. floor, physical_reference or directions). When the directional properties of an EVSE are insufficient to reach the EVSE from the Location point, then it typically indicates that the EVSE should be put in a different Location object (sometimes with the same address but with different coordinates/directions). An EVSE object has a list of Connectors which can not be used simultaneously: only one connector per EVSE can be used at the time.",
         "properties": {
-          "uid": {
-            "description": "Uniquely identifies the EVSE within the CPOs platform (and suboperator platforms). For example a database ID or the actual \"EVSE ID\". This field can never be changed, modified or renamed. This is the \"technical\" identification of the EVSE, not to be used as \"human readable\" identification, use the field evse_id for that. This field is named uid instead of id, because id could be confused with evse_id which is an eMI3 defined field.",
-            "example": "3256",
-            "type": "string"
-          },
           "evse_id": {
             "type": "string",
             "example": "BE*BEC*E041503001",
@@ -1850,29 +1787,11 @@
               ]
             }
           },
-          "floor_level": {
-            "type": "string",
-            "description": "Level on which the Charge Point is located (in garage buildings) in the locally displayed numbering scheme.",
-            "example": 2
-          },
           "coordinates": {
             "description": "Coordinates of the EVSE.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/GeoLocation"
-              }
-            ]
-          },
-          "physical_reference": {
-            "description": "A number/string printed on the outside of the EVSE for visual identification.",
-            "type": "string",
-            "example": 3
-          },
-          "directions": {
-            "description": "Multi-language human-readable directions when more detailed information on how to reach the EVSE from the Location is required.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DisplayText"
               }
             ]
           },
@@ -2023,10 +1942,10 @@
             "description": "Id of the Location object of this CPO, on which the charging session is/was happening.",
             "example": "LOC1"
           },
-          "evse_uid": {
+          "evse_id": {
             "type": "string",
             "example": 123,
-            "description": "uid of the EVSE of this Location on which the charging session is/was happening."
+            "description": "id of the EVSE of this Location on which the charging session is/was happening."
           },
           "connector_id": {
             "type": "string",
@@ -2896,7 +2815,10 @@
           "PARKING_LOT",
           "CARPOOL_PARKING",
           "FUEL_STATION",
-          "WIFI"
+          "WIFI",
+          "PAYTM",
+          "SHELTERED",
+          "CASH"
         ]
       },
       "EnvironmentalImpactCategory": {
@@ -3052,15 +2974,10 @@
               }
             ]
           },
-          "evse_uid": {
+          "evse_id": {
             "type": "string",
             "example": 123,
             "description": "Uniquely identifies the EVSE. For example a database unique ID or the actual EVSE ID. This field can never be changed, modified or renamed. This is the technical identification of the EVSE, not to be used as human readable identification, use the field: evse_id for that."
-          },
-          "evse_id": {
-            "type": "string",
-            "example": "BE*BEC*E041503001",
-            "description": "Unique EVSE ID, if an evse_id is to be re-used in the real world, the evse_id can be removed from an EVSE object if the status is set to REMOVED."
           },
           "connector_id": {
             "type": "string",
@@ -3394,10 +3311,6 @@
             "type": "string",
             "example": "11AA5G"
           },
-          "alt_nme": {
-            "type": "string",
-            "example": "Delta Electric"
-          },
           "rd_nme": {
             "type": "string",
             "example": "Minto Road"
@@ -3426,38 +3339,6 @@
             "type": "string",
             "example": "Central Delhi"
           },
-          "city_eloc": {
-            "type": "string",
-            "example": "11ATG3"
-          },
-          "sslc_eloc": {
-            "type": "string",
-            "example": "11ATGS"
-          },
-          "subl_eloc": {
-            "type": "string",
-            "example": "11ATG1"
-          },
-          "loc_eloc": {
-            "type": "string",
-            "example": "11ATGA"
-          },
-          "sdb_eloc": {
-            "type": "string",
-            "example": "11ATGQ"
-          },
-          "dst_eloc": {
-            "type": "string",
-            "example": "11ATG7"
-          },
-          "stt_eloc": {
-            "type": "string",
-            "example": "11FTG3"
-          },
-          "parent_eloc": {
-            "type": "string",
-            "example": "11AAG3"
-          },
           "entry_lat": {
             "type": "string",
             "example": 51.047599
@@ -3474,79 +3355,6 @@
           "brand_nme": {
             "type": "string",
             "example": "Honda"
-          },
-          "partner_ref_id": {
-            "type": "string",
-            "example": 12345
-          },
-          "paytm": {
-            "type": "boolean"
-          },
-          "cash": {
-            "type": "boolean"
-          },
-          "sheltered": {
-            "type": "boolean"
-          },
-          "parking_slot_no": {
-            "type": "string",
-            "example": 2
-          },
-          "own_typ": {
-            "type": "string",
-            "enum": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "alt_nme": {
-            "type": "string",
-            "example": "Delta Electric"
-          },
-          "desc": {
-            "type": "string"
-          },
-          "brand_id": {
-            "type": "string",
-            "example": 111
-          },
-          "sbrand_id": {
-            "type": "string",
-            "example": 11
-          },
-          "sbrand_nme": {
-            "type": "string",
-            "example": "Acura"
-          },
-          "record_type": {
-            "type": "string",
-            "example": 5
-          },
-          "cop": {
-            "type": "string"
-          },
-          "pip_eloc": {
-            "type": "string",
-            "example": "AAC123"
-          },
-          "priority": {
-            "type": "string"
-          },
-          "createdOn": {
-            "type": "string",
-            "example": 12232020
-          },
-          "c_keywords": {
-            "type": "string"
-          },
-          "keywords": {
-            "type": "string"
-          },
-          "fax": {
-            "type": "string",
-            "example": 43121211
           },
           "pay": {
             "type": "string",
@@ -3578,51 +3386,6 @@
               2
             ]
           },
-          "privatevspublic": {
-            "type": "string",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          },
-          "bld_typ": {
-            "type": "string",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          },
-          "pip_typ": {
-            "type": "string"
-          },
-          "code_nme": {
-            "type": "string"
-          },
-          "brand_typ": {
-            "type": "string"
-          },
-          "brand_styp": {
-            "type": "string"
-          },
-          "poi_type": {
-            "type": "string"
-          },
-          "ref_pin": {
-            "type": "string"
-          },
-          "client_id": {
-            "type": "string"
-          },
-          "branch_nme": {
-            "type": "string"
-          }
-        }
-      },
-      "SYGIC-AdditionalInfo": {
-        "type": "object",
-        "properties": {
           "rating": {
             "type": "string",
             "enum": [
