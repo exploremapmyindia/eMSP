@@ -1718,11 +1718,23 @@
           },
           "opening_times": {
             "description": "The times when the EVSEs at the location can be accessed for charging.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Hours"
+            "type": "array",
+            "items": {
+              "properties": {
+                "icon": {
+                  "type": "string",
+                  "example": "ic_timings.png"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Timings"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "10:00 AM to 11:00 PM"
+                }
               }
-            ]
+            }
           },
           "AdditionalInfo": {
             "$ref": "#/components/schemas/MMI-AdditionalInfo"
@@ -1768,14 +1780,6 @@
               }
             ]
           },
-          "capabilities": {
-            "description": "List of functionalities that the EVSE is capable of.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Capability"
-              }
-            ]
-          },
           "connectors": {
             "type": "array",
             "description": "List of available connectors on the EVSE.",
@@ -1786,22 +1790,6 @@
                 }
               ]
             }
-          },
-          "coordinates": {
-            "description": "Coordinates of the EVSE.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GeoLocation"
-              }
-            ]
-          },
-          "parking_restrictions": {
-            "description": "The restrictions that apply to the parking spot.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ParkingRestriction"
-              }
-            ]
           },
           "images": {
             "description": "Links to images related to the EVSE such as photos or logos.",
@@ -2778,13 +2766,8 @@
           "MALL",
           "SUPERMARKET",
           "SPORT",
-          "RECREATION_AREA",
-          "NATURE",
-          "MUSEUM",
-          "BIKE_SHARING",
           "BUS_STOP",
           "TAXI_STAND",
-          "TRAM_STOP",
           "METRO_STATION",
           "TRAIN_STATION",
           "AIRPORT",
