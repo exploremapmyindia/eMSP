@@ -2,14 +2,14 @@
   "openapi": "3.0.1",
   "info": {
     "title": "MapmyIndia Electric Vehicle & Charging Station APIs",
-    "description": "<p><img alt=\"Charging Topology\" src=\"https://raw.githubusercontent.com/exploremapmyindia/eMSP/master/charging_topology.PNG\" height=350 width=700></p><p><i>Figure: Charging Topology schematic</i></p><h2>Security Type</h2> <p>This APIs follow OAuth2 based security. <b>To know more on how to create your authorization tokens, please click the `Authorize` button below. More details available <a href=https://www.mapmyindia.com/api/advanced-maps/doc/authentication-api.php>here</a></b> </br><li><a href=https://www.mapmyindia.com/api/login>Login/Sing Up</a> for API key and other access.<p></br>",
+    "description": "<p><img alt=\"Charging Topology\" src=\"https://raw.githubusercontent.com/exploremapmyindia/eMSP/master/charging_topology.PNG\" height=350 width=700></p><p><i>Figure: Charging Topology schematic</i></p><h2>Security Type</h2> <p>This APIs follow OAuth2 based security. <b>To know more on how to create your authorization tokens, please click the `Authorize` button below. More details available <a href=https://www.mapmyindia.com/api/advanced-maps/doc/authentication-api.php>here</a></b> </br><li><a href=https://www.mapmyindia.com/api/login>Login/Sign Up</a> for API key and other access.<p></br>",
     "termsOfService": "https://www.mapmyindia.com/api/terms-&-conditions",
     "contact": {
       "name": "MapmyIndia API Support",
       "url": "https://www.mapmyindia.com/api/#f_cont",
       "email": "apisupport@mapmyindia.com"
     },
-    "version": "v2.1.0"
+    "version": "v2.2"
   },
   "externalDocs": {
     "description": "Find out more about MapmyIndia APIs",
